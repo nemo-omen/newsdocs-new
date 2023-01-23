@@ -1,0 +1,57 @@
+:root {
+   --dark: #00121d;
+   --light: #fffcea;
+   --bg: var(--light);
+   --fg: var(--dark);
+
+   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+* {
+   box-sizing: border-box;
+}
+
+html,
+body {
+   margin: 0;
+   padding: 0;
+   background-color: var(--bg);
+   color: var(--fg);
+}
+
+body {
+   min-height: 100vh;
+   display: grid;
+   grid-template-rows: auto 1fr auto;
+   justify-content: center;
+}
+
+a:not(class) {
+   color: var(--fg);
+}
+
+.inner {
+   width: 120ch;
+   padding: 1rem;
+   height: 100%;
+}
+
+.header-inner {
+   display: flex;
+   justify-content: space-between;
+   align-items: center;
+}
+
+.header-inner nav {
+   display: flex;
+   gap: 2rem;
+   font-size: 1.2rem;
+   font-weight: 600;
+}
+
+@media screen and (prefers-color-scheme: dark) {
+   :root {
+      --fg: var(--light);
+      --bg: var(--dark);
+   }
+}
