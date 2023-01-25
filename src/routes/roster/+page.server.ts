@@ -1,20 +1,26 @@
-import type { PageServerLoad } from './$types';
+import type { PageServerLoad, Actions } from './$types';
+import { parse } from './parser';
 
 const currentUrl = 'https://www.tomgreencountysheriff.org/roster.php';
 const releasedUrl = 'https://www.tomgreencountysheriff.org/roster.php?released=1';
+
+export const actions = {
+   default: async (event) => {
+      console.log(event);
+   }
+} satisfies Actions;
 
 export const load = (async ({ fetch, params }) => {
    // const currentInmatesString = await getInmatesString(currentUrl, fetch);
    // const releasedInmatesString = await getInmatesString(releasedUrl, fetch);
 
-   const currentHtml = getInmatesString(currentUrl, fetch);
-   const releasedHtml = getInmatesString(releasedUrl, fetch);
+   const currentHtml = await getInmatesString(currentUrl, fetch);
+   const releasedHtml = await getInmatesString(releasedUrl, fetch);
+
+   const templateData = await parse(currentHtml, releasedHtml);
 
    return {
-      roster: {
-         current: currentHtml,
-         released: releasedHtml
-      }
+      templateData
    };
 }) satisfies PageServerLoad;
 

@@ -1,5 +1,12 @@
-import jsdom from 'jsdom';
+import {
+   templateChargeList,
+   templateDescription,
+   templateDisclaimer,
+   templateInmateList,
+   templateStyle
+} from './templates';
 
+import jsdom from 'jsdom';
 const { JSDOM } = jsdom;
 
 export type InmateMap<T> = {
@@ -32,13 +39,13 @@ chargeMap.set('VOP', 'VIOLATION OF PAROLE');
 
 export type Inmate = InmateMap<InmateData>;
 
-function getInmatesData(document: HTMLDocument | null): Inmate[] {
-   const inmateDivs = <Element[]><unknown>document?.querySelectorAll('.inmate_div');
+function getInmatesData(document: Document | null): Inmate[] {
+   const inmateDivs = <HTMLDivElement[]><unknown>document?.querySelectorAll('.inmate_div');
    const inmates: Inmate[] = [];
 
    for (const div of inmateDivs) {
       const src: string = 'https://www.tomgreencountysheriff.org/' + div?.querySelector('img')?.getAttribute('src') || '';
-      const dataElement: Element = div.querySelector('.inmate_data')!;
+      const dataElement: HTMLDivElement = div.querySelector('.inmate_data')!;
       const name: string = getInmateName(dataElement);
       const dataKeys: string[] = getDataKeys(dataElement);
       const dataVals: string[] = getDataVals(dataElement);
@@ -52,9 +59,9 @@ function getInmatesData(document: HTMLDocument | null): Inmate[] {
    return inmates;
 }
 
-function getDOM(htmlString: string): HTMLDocument {
-   const document: HTMLDocument = new DOMParser().parseFromString(htmlString, 'text/html')!;
-   return document;
+function getDOM(htmlString: string): Document {
+   const dom = new JSDOM(htmlString);
+   return dom.window.document;
 }
 
 function buildInmateObject(name: string, src: string, dataKeys: string[], dataVals: string[]): Inmate {
@@ -91,11 +98,11 @@ function getDataVals(dataElement: Element): string[] {
    return dataVals;
 }
 
-function getDataKeys(dataElement: Element): string[] {
+function getDataKeys(dataElement: HTMLDivElement): string[] {
    const dataKeys: string[] = Array.from(
-      <Element[]><unknown>dataElement.querySelectorAll('.inmate_data_bold')
+      <HTMLDivElement[]><unknown>dataElement.querySelectorAll('.inmate_data_bold')
    ).map(
-      (el) => el.innerText
+      (el) => el.innerHTML
          .replaceAll('\t', '')
          .replaceAll('\n', '')
          .replace(' #', ' Number')
@@ -106,8 +113,8 @@ function getDataKeys(dataElement: Element): string[] {
    return dataKeys;
 }
 
-function getInmateName(dataElement: Element): string {
-   const name: string = dataElement?.querySelector('.ptitles')?.innerText
+function getInmateName(dataElement: HTMLDivElement): string {
+   const name: string = dataElement!.querySelector('.ptitles')!.innerHTML
       .trim()
       .toLowerCase()
       .split(', ')
@@ -148,11 +155,24 @@ function isInDateRange(dateString: string): boolean {
 
 function getCharges(inmates: Inmate[]): string[] {
    const charges: string[] = [];
+   let chargesMap: Map<string, number> = new Map();
+
    for (const inmate of inmates) {
       for (const charge of inmate.charges) {
-         charges.push(charge);
+         if (chargesMap.has(charge)) {
+            chargesMap.set(charge, chargesMap.get(charge)! + 1);
+         } else {
+            chargesMap.set(charge, 1);
+         }
+
+         chargesMap = new Map([...chargesMap.entries()].sort((a, b) => b[1] - a[1]));
       }
    }
+
+   for (const key of chargesMap.keys()) {
+      charges.push(`${key}: ${chargesMap.get(key)}`);
+   }
+
    return charges;
 }
 
@@ -248,4 +268,34 @@ async function sendMail(template: string) {
    // });
 
    await client.close();
+}
+
+export async function parse(current: string, released: string) {
+   const currentInmatesDocument: Document | null = getDOM(current);
+   const releasedInmatesDocument: Document | null = getDOM(released);
+
+   const currentInmatesData: Inmate[] = getInmatesData(currentInmatesDocument);
+   const releasedInmatesData: Inmate[] = getInmatesData(releasedInmatesDocument);
+
+   const inmates: Inmate[] = [...currentInmatesData, ...releasedInmatesData].sort(
+      (a, b) => new Date(b.booking_date as string).getTime() - new Date(a.booking_date as string).getTime()
+   );
+
+   let allCharges = getCharges(inmates);
+   allCharges = parseCharges(allCharges);
+
+   const isMonday = new Date().getDay() === 1 ? true : false;
+   const inmateHTML = templateInmateList(inmates);
+   const chargesHTML = templateChargeList(allCharges);
+   const template = `${templateDescription(isMonday ? 72 : 24, inmates.length)}
+
+${chargesHTML}
+
+${inmateHTML}
+
+${templateDisclaimer}`;
+
+   return template;
+   // Deno.writeTextFile('./jaillog.html', template);
+   // sendMail(template);
 }
