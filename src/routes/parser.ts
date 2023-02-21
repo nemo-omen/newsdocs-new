@@ -205,55 +205,6 @@ function parseCharges(charges: string[]): string[] {
   });
 }
 
-async function sendMail(template: string) {
-  console.log("Sending mail...");
-  // const transporter = nodemailer.createTransport({
-  //   host: 'smtp.dreamhost.com',
-  //   port: 465,
-  //   secure: true,
-  //   auth: {
-  //     user: 'hello@newsdocs.org',
-  //     pass: '?!Jcc06181984!?'
-  //   },
-  //   tls: {
-  //     requestCert: false,
-  //     rejectUnauthorized: false,
-  //   },
-  // });
-
-  const message = {
-    from: "hello@newsdocs.org",
-    to: ["jcaldwell@klst.net", "awade@klst.net"],
-    subject: "Your daily Jail Logs template",
-    content: `1. Copy the code between the '-----'
- 2. Start a new draft in WP
- 3. Switch to the code editor (Ctrl+Shift+Alt+M)
- 4. Paste the template into the code editor
- 5. Exit the code editor (Ctrl+Shift+Alt+M)
- 6. Double-check the article, make sure everything looks good and meets standards.
- 7. Publish, push etc.
- --------
- ${template}
- --------
- `,
-  };
-
-  // transporter.sendMail(message, (err, info) => {
-  //   if (err) {
-  //     console.log('Error sending message: ', err);
-  //   } else {
-  //     console.log('Mail sent: ', info);
-  //   }
-  // });
-
-  // transporter.verify(function (error, success) {
-  //   if (error) {
-  //     console.log('transporter error: ', error);
-  //   } else {
-  //     console.log("Server is ready to take our messages");
-  //   }
-  // });
-
   const client = new SMTPClient({
     connection: {
       hostname: "smtp.dreamhost.com",

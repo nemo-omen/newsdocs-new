@@ -50,35 +50,35 @@
       <button>Code Copied!</button>
     {/if}
 
-    {#if !isCodeView}
-      <button on:click={toggleCode}>See the Code</button>
-    {:else}
-      <button on:click={toggleCode}>See the Post</button>
-    {/if}
+    <!-- {#if !isCodeView} -->
+    <!--   <button on:click={toggleCode}>See the Code</button> -->
+    <!-- {:else} -->
+    <!--   <button on:click={toggleCode}>See the Post</button> -->
+    <!-- {/if} -->
 
     <!-- <button on:click={togglePostForm}>Create Post</button> -->
   </div>
-  <dialog open={isPostFormOpen}>
-    <form method="POST">
-      <div class="form-body">
-        <div class="form-group">
-          <label for="email">Email</label>
-          <input type="email" name="email" id="email" />
-        </div>
-        <div class="form-group">
-          <label for="password">Password</label>
-          <input type="password" name="password" id="password" />
-        </div>
-        <input type="submit" value="Send It!" />
-        <button>Cancel</button>
-      </div>
-    </form>
-  </dialog>
+  <!-- <dialog open={isPostFormOpen}> -->
+  <!--   <form method="POST"> -->
+  <!--     <div class="form-body"> -->
+  <!--       <div class="form-group"> -->
+  <!--         <label for="email">Email</label> -->
+  <!--         <input type="email" name="email" id="email" /> -->
+  <!--       </div> -->
+  <!--       <div class="form-group"> -->
+  <!--         <label for="password">Password</label> -->
+  <!--         <input type="password" name="password" id="password" /> -->
+  <!--       </div> -->
+  <!--       <input type="submit" value="Send It!" /> -->
+  <!--       <button>Cancel</button> -->
+  <!--     </div> -->
+  <!--   </form> -->
+  <!-- </dialog> -->
   {#if !isCodeView}
     <h2>Jail Logs: {new Date().toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })}</h2>
     {@html data.templateData}
-  {:else}
-    {@html data.codeData}
+  <!-- {:else} -->
+    <!-- {@html data.codeData} -->
   {/if}
 </div>
 
@@ -87,7 +87,7 @@
     display: flex;
     gap: 2rem;
     margin-bottom: 2rem;
-    justify-content: flex-end;
+    justify-content: center;
   }
 
   .roster-header-container {
