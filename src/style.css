@@ -1,8 +1,14 @@
 :root {
    --dark: #00121d;
-   --light: #fffcea;
+   --less_dark: #011826;
+   --light: #fffdf4;
+   --less_light: #d6d5cf;
    --bg: var(--light);
    --fg: var(--dark);
+   --code_bg: var(--less_light);
+   /* --accent: #3c9fdc; */
+   --accent: #e64343;
+   --accent_dark: #870707;
 
    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
    font-size: 16px;
@@ -40,17 +46,51 @@ a:not(class) {
    color: var(--fg);
 }
 
+dialog {
+   padding: 4rem;
+   background-color: var(--bg);
+   border: 1px solid var(--accent);
+   /* border: none; */
+   color: var(--fg);
+   font-size: 1.2rem;
+   box-shadow: 5px 5px 20px 5px rgb(0, 0, 0, 0.3);
+}
+
 input {
    background-color: var(--bg);
    border: 1px solid var(--fg);
-   padding: 0.25rem;
+   padding: 0.5rem;
    color: var(--fg);
    font-size: 1.2rem;
 }
 
-button {
+button,
+input[type="button"],
+input[type="submit"] {
    font-size: 1.2rem;
-   padding: 0.25rem;
+   font-weight: 700;
+   padding: 0.75rem;
+   display: block;
+   line-height: 1;
+   background-color: var(--accent_dark);
+   border: none;
+   border-radius: 0.5em;
+   color: #fff;
+   cursor: pointer;
+   transition: background-color 0.3s ease-out;
+}
+
+button:hover {
+   background-color: var(--accent);
+}
+
+button:active {
+   background-color: var(--accent_dark);
+}
+
+pre {
+   overflow: auto;
+   padding: 1rem;
 }
 
 .inner {
@@ -61,8 +101,17 @@ button {
 
 .header-inner {
    display: flex;
-   justify-content: space-between;
+   justify-content: space-around;
    align-items: center;
+}
+
+.header-inner a {
+  font-size: 2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  text-decoration: none;
+  align-items: center;
 }
 
 .header-inner nav {
@@ -76,5 +125,10 @@ button {
    :root {
       --fg: var(--light);
       --bg: var(--dark);
+      --code_bg: var(--less_dark);
+   }
+
+   button {
+      color: var(--fg);
    }
 }

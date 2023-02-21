@@ -1,11 +1,13 @@
 import type { Inmate } from "./parser";
 
-export const templateDescription = function (timePeriod: number, inmateCount: number): string {
-
-	return `
+export const templateDescription = function (
+  timePeriod: string,
+  inmateCount: number,
+): string {
+  return `
 <!-- wp:paragraph -->
 
-<p>Over the past ${timePeriod} hours, ${inmateCount} people were booked into the Tom Green County Detention Center. Below is a summary of the booking charges and the individual arrest records.</p>
+<p>${timePeriod}, ${inmateCount} people were booked into the Tom Green County Detention Center. Below is a summary of the booking charges and the individual arrest records.</p>
 
 <!-- /wp:paragraph -->
 
@@ -18,12 +20,12 @@ export const templateDescription = function (timePeriod: number, inmateCount: nu
 };
 
 export const templateChargeList = function (charges: string[]) {
-	return `
+  return `
 <!-- wp:list -->
 
 <ul>
 
-${charges.map((charge) => `  <li>${charge}</li>`).join('\n')}
+${charges.map((charge) => `  <li>${charge}</li>`).join("\n")}
 
 </ul>
 
@@ -31,8 +33,8 @@ ${charges.map((charge) => `  <li>${charge}</li>`).join('\n')}
 };
 
 export const templateInmateList = function (inmates: Inmate[]): string {
-	const inmateHTML = inmates.map((inmate: Inmate) => {
-		return `
+  const inmateHTML = inmates.map((inmate: Inmate) => {
+    return `
 <article class="inmate" style = "display: flex; flex-wrap: wrap; align-items: flex-start; gap: 2rem; margin-bottom: 2rem;">
   <img src="${inmate.img}" width="200" alt="${inmate.name} mug shot" style="flex-grow: 1; flex-shrink: 1; flex-basis: 30ch; max-width: 250px;"/>
   <div class="inmate-data"style="flex-grow: 1; flex-shrink: 1; flex-basis: 30ch;">
@@ -41,25 +43,26 @@ export const templateInmateList = function (inmates: Inmate[]): string {
     <p><span class="inmate-data-label" style="font-weight: bold;">Booking Number: </span>${inmate.booking_number}</p>
     <p><span class="inmate-data-label" style="font-weight: bold;">Booking Date: </span>${inmate.booking_date}</p>
 
-    ${inmate.release_date !== undefined
-				? `<p><span class="inmate-data-label" style="font-weight: bold;">Release Date: </span>${inmate.release_date}</p>`
-				: ''
-			}
+    ${
+      inmate.release_date !== undefined
+        ? `<p><span class="inmate-data-label" style="font-weight: bold;">Release Date: </span>${inmate.release_date}</p>`
+        : ""
+    }
 
     <p><span class="inmate-data-label" style="font-weight: bold;">Charges: </span></p>
 
-    ${inmate.charges.map((charge) => `<p>${charge}</p>`).join('\n    ')}
+    ${inmate.charges.map((charge) => `<p>${charge}</p>`).join("\n    ")}
 
     <p><span class="inmate-data-label" style="font-weight: bold;">Bond: </span>${inmate.bond}</p>
   </div>
 </article>`;
-	});
+  });
 
-	// Adding an extra '.' to all ocurrences of '.inmate'
-	// because DenoMailer seems to want to strip the leading '.'
-	// from class selectors. 
-	return `<!-- wp:html -->
-	${inmateHTML.join('\n\t')}
+  // Adding an extra '.' to all ocurrences of '.inmate'
+  // because DenoMailer seems to want to strip the leading '.'
+  // from class selectors.
+  return `<!-- wp:html -->
+	${inmateHTML.join("\n\t")}
 
 <!-- /wp:html -->`;
 };

@@ -10,11 +10,12 @@
   <div class="inner header-inner">
     <a href="/" id="brand" aria-label="NewsDocs.org">
       <img src="logo.svg" alt="NewsDocs" width="64" height="64" />
+      NewsDocs
     </a>
-    <nav>
-      <a href="/">Home</a>
-      <a href="/roster">Jail Logs</a>
-    </nav>
+    <!-- <nav> -->
+    <!--   <a href="/">Home</a> -->
+    <!--   <a href="/roster">Jail Logs</a> -->
+    <!-- </nav> -->
   </div>
 </header>
 
