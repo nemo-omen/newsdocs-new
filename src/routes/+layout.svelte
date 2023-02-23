@@ -12,10 +12,11 @@
       <img src="logo.svg" alt="NewsDocs" width="64" height="64" />
       NewsDocs
     </a>
-    <!-- <nav> -->
-    <!--   <a href="/">Home</a> -->
-    <!--   <a href="/roster">Jail Logs</a> -->
-    <!-- </nav> -->
+    <nav>
+      <a href="/">Home</a>
+      <a href="/docs">Guides</a>
+      <a href="/shiftguide">What to Do</a>
+    </nav>
   </div>
 </header>
 
@@ -30,3 +31,9 @@
     &copy; {new Date().getFullYear()} NewsDocs
   </div>
 </footer>
+
+<style>
+  header nav a {
+  font-size: 1.2rem;
+  }
+</style>

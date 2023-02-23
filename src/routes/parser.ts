@@ -205,38 +205,6 @@ function parseCharges(charges: string[]): string[] {
   });
 }
 
-  const client = new SMTPClient({
-    connection: {
-      hostname: "smtp.dreamhost.com",
-      port: 465,
-      tls: true,
-      auth: {
-        username: "hello@newsdocs.org",
-        password: "?!Jcc06181984!?",
-      },
-    },
-  });
-
-  await client.send(message);
-
-  // await client.send({
-  //   from: 'hello@newsdocs.org',
-  //   to: ['jcaldwell@klst.net', 'nemo.omen@gmail.com'],
-  //   subject: 'Your daily jail logs template is ready!',
-  //   content: 'Just copy all of the code' + template,
-  // attachments: [
-  //   {
-  //     contentType: 'text/plain; charset=us-ascii',
-  //     filename: 'jaillog.txt',
-  //     encoding: 'text',
-  //     content: template,
-  //   }
-  // ]
-  // });
-
-  await client.close();
-}
-
 export async function parse(current: string, released: string) {
   const currentInmatesDocument: Document | null = getDOM(current);
   const releasedInmatesDocument: Document | null = getDOM(released);
